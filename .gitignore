@@ -1,0 +1,58 @@
+# ROS 2 / colcon
+build/
+install/
+log/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CTestTestfile.cmake
+Testing/
+
+# C/C++
+*.o
+*.so
+*.so.*
+*.a
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+*.egg
+
+# IDE / editor
+.idea/
+*.swp
+*.swo
+*~
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets & local config
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+**/MVS_SDK/**/license*
+
+# Hikvision / vendor SDK local paths (keep SDK out of repo if installed locally)
+MvSdkLog/
+*.log
