@@ -1,0 +1,24 @@
+# 第二层 GenICam 属性。键名固定为 feature / type / value。
+# type 白名单：int、float、enum、bool、string、cmd。
+features:
+  - feature: AcquisitionMode
+    type: enum
+    value: Continuous
+  - feature: TriggerMode
+    type: enum
+    value: On
+  - feature: TriggerSource
+    type: enum
+    value: Software
+  - feature: ExposureAuto
+    type: enum
+    value: Off
+  - feature: ExposureTime
+    type: float
+    value: "2000"
+  - feature: GainAuto
+    type: enum
+    value: Off
+  - feature: Gain
+    type: float
+    value: "6"

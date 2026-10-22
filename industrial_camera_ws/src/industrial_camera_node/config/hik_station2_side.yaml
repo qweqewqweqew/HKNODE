@@ -1,0 +1,19 @@
+features:
+  - feature: AcquisitionMode
+    type: enum
+    value: Continuous
+  - feature: TriggerMode
+    type: enum
+    value: Off
+  - feature: ExposureAuto
+    type: enum
+    value: Off
+  - feature: ExposureTime
+    type: float
+    value: "4000"
+  - feature: GainAuto
+    type: enum
+    value: Off
+  - feature: Gain
+    type: float
+    value: "2"

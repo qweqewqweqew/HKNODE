@@ -1,0 +1,5 @@
+string camera_id
+uint64 trigger_seq_id
+string workpiece_id
+float32 override_exposure_us
+float32 override_gain_db

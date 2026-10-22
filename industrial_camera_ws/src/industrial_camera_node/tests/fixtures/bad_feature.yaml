@@ -1,0 +1,4 @@
+features:
+  - feature: ExposureTime
+    type: nope
+    value: "1"

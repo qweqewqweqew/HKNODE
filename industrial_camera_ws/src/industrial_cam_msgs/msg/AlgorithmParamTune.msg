@@ -1,0 +1,10 @@
+string camera_id
+uint64 base_frame_id
+uint32 base_param_version
+bool tune_exposure
+float32 target_exposure_us
+bool tune_gain
+float32 target_gain_db
+bool retrigger_immediately
+uint64 retrigger_seq_id
+string workpiece_id

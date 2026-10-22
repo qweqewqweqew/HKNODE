@@ -1,0 +1,54 @@
+camera_manager_node:
+  ros__parameters:
+    project_name: "Industrial_Vision_Windows_V4"
+    log_dir: "./logs/camera_node"
+    log_level: "INFO"
+    stat_report_interval_sec: 10
+    trigger_cmd_topic: "/vision/trigger_cmd"
+    algo_tune_topic: "/vision/algo_param_tune"
+    active_stations: ["station1_up", "station2_side"]
+    # param_settle_us 默认 0。经验区间：GigE 0~1000；关闭 Auto 或大跨度 2000~5000；USB3 多为 0；线扫或老 GigE 先 5000 再往下压。
+    station1_up:
+      brand: "hikvision"
+      connect_type: "sn"
+      device_identity: "DA12345678"
+      optical_frame_id: "station1_up_optical_frame"
+      working_mode: "trigger"
+      trigger_source: "software"
+      trigger_timeout_ms: 500
+      trigger_queue_depth: 1
+      param_settle_us: 0
+      topic_name: "/vision/station1_up/shm_img"
+      shm_name: "shm_cam_station1_up"
+      shm_permissions: "0666"
+      shm_slot_count: 16
+      shm_slot_capacity_mb: 25
+      shm_lock_timeout_ms: 1500
+      reconnect_interval_ms: 3000
+      auto_tune_enable: true
+      auto_tune_exposure_min_us: 100.0
+      auto_tune_exposure_max_us: 20000.0
+      auto_tune_gain_min_db: 0.0
+      auto_tune_gain_max_db: 15.0
+      feature_config_file: "config/hik_station1_up.yaml"
+    station2_side:
+      brand: "hikvision"
+      connect_type: "ip"
+      device_identity: "192.168.1.102"
+      optical_frame_id: "station2_side_optical_frame"
+      working_mode: "continuous"
+      topic_name: "/vision/station2_side/shm_img"
+      shm_name: "shm_cam_station2_side"
+      shm_permissions: "0666"
+      shm_slot_count: 16
+      shm_slot_capacity_mb: 12
+      shm_lock_timeout_ms: 3000
+      reconnect_interval_ms: 3000
+      auto_tune_enable: true
+      auto_tune_exposure_min_us: 500.0
+      auto_tune_exposure_max_us: 15000.0
+      auto_tune_gain_min_db: 0.0
+      auto_tune_gain_max_db: 12.0
+      param_settle_us: 0
+      trigger_queue_depth: 1
+      feature_config_file: "config/hik_station2_side.yaml"

@@ -2,6 +2,9 @@
 build/
 install/
 log/
+logs/
+third_party/
+*.zip
 
 # CMake
 CMakeCache.txt

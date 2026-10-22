@@ -1,0 +1,26 @@
+camera_manager_node:
+  ros__parameters:
+    project_name: "bad"
+    log_dir: "./logs/camera_node"
+    stat_report_interval_sec: 10
+    active_stations: ["station_bad"]
+    station_bad:
+      brand: "hikvision"
+      connect_type: "sn"
+      device_identity: "BADSN"
+      working_mode: "trigger"
+      trigger_source: "software"
+      topic_name: "/vision/bad"
+      shm_name: "shm_bad_type"
+      shm_slot_count: 2
+      shm_slot_capacity_mb: 1
+      shm_lock_timeout_ms: 50
+      reconnect_interval_ms: 100
+      trigger_timeout_ms: 200
+      param_settle_us: 0
+      trigger_queue_depth: 1
+      auto_tune_exposure_min_us: 1
+      auto_tune_exposure_max_us: 10
+      auto_tune_gain_min_db: 0
+      auto_tune_gain_max_db: 1
+      feature_config_file: "bad_feature.yaml"

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>industrial_camera_node</name>
+  <version>1.0.0</version>
+  <description>Windows 海康工业相机 ROS 2 节点：共享内存零拷贝、双模采图、算法闭环调参。</description>
+  <maintainer email="dev@local">HKNODE</maintainer>
+  <license>UNLICENSED</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>industrial_cam_msgs</depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
