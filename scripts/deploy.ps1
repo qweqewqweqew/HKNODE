@@ -22,21 +22,27 @@ if (-not $cl) {
 }
 Write-Output "OK: MSVC $cl"
 
-if ($env:ROS_DISTRO) {
-    Write-Output "OK: ROS_DISTRO=$env:ROS_DISTRO"
+. (Join-Path $PSScriptRoot "use_foxy.ps1")
+if (Test-Path -LiteralPath $HknodeRosSetup) {
+    Write-Output "OK: ROS 2 Foxy $HknodeRosSetup"
 } else {
-    Write-Output "WARN: ROS 2 is not configured. Core tests can build. The camera node executable needs colcon."
+    Write-Output "MISSING: ROS 2 Foxy $HknodeRosSetup"
+    exit 1
 }
 
-$mvsCandidates = @(
-    $env:MVS_DEV_DIR,
-    "C:\Program Files (x86)\MVS\Development",
-    "C:\Program Files\MVS\Development"
-) | Where-Object { $_ -and (Test-Path $_) }
-if ($mvsCandidates) {
-    Write-Output "OK: MVS $($mvsCandidates[0])"
+$nodeRoot = Join-Path $PSScriptRoot "..\industrial_camera_ws\src\industrial_camera_node\vendor\mvs"
+$mvsHeader = Join-Path $nodeRoot "include\MvCameraControl.h"
+$mvsLib = Join-Path $nodeRoot "lib\win64\MvCameraControl.lib"
+$mvsDll = Join-Path $nodeRoot "bin\win64\MVCameraControl.dll"
+if ((Test-Path $mvsHeader) -and (Test-Path $mvsLib)) {
+    Write-Output "OK: MVS headers and import library under vendor/mvs"
 } else {
-    Write-Output "WARN: Hikvision MVS SDK not found. Set MVS_DEV_DIR before a hardware build."
+    Write-Output "WARN: vendor/mvs is missing MvCameraControl.h or the win64 import library."
+}
+if (Test-Path $mvsDll) {
+    Write-Output "OK: MVCameraControl.dll"
+} else {
+    Write-Output "WARN: vendor/mvs/bin/win64/MVCameraControl.dll is missing. The node can link, but it cannot load the camera SDK at runtime."
 }
 
 if ($env:BOOST_ROOT -and (Test-Path (Join-Path $env:BOOST_ROOT "boost\interprocess\shared_memory_object.hpp"))) {

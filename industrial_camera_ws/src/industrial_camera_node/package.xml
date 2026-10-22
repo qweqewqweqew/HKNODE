@@ -3,7 +3,7 @@
   <name>industrial_camera_node</name>
   <version>1.0.0</version>
   <description>Windows 海康工业相机 ROS 2 节点：共享内存零拷贝、双模采图、算法闭环调参。</description>
-  <maintainer email="dev@local">HKNODE</maintainer>
+  <maintainer email="hknode@example.com">HKNODE</maintainer>
   <license>UNLICENSED</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
   <depend>rclcpp</depend>

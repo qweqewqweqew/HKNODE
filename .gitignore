@@ -21,6 +21,7 @@ Testing/
 *.a
 *.dylib
 *.dll
+!industrial_camera_ws/src/industrial_camera_node/vendor/mvs/bin/win64/*.dll
 *.exe
 *.out
 *.app
@@ -56,6 +57,5 @@ desktop.ini
 credentials.json
 **/MVS_SDK/**/license*
 
-# Hikvision / vendor SDK local paths (keep SDK out of repo if installed locally)
 MvSdkLog/
 *.log

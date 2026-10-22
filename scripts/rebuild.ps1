@@ -31,8 +31,21 @@ Write-Output "RUN $($exe.FullName)"
 & $exe.FullName
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-if (-not $env:ROS_DISTRO) {
-    Write-Output "Core tests passed. ROS 2 is not configured, so industrial_cam_msgs and camera_manager_node were not built with colcon."
+. (Join-Path $PSScriptRoot "use_foxy.ps1")
+if (-not (Import-HknodeRos)) { exit 1 }
+Write-Output "ROS_DISTRO=$env:ROS_DISTRO"
+
+$ws = Join-Path $repo "industrial_camera_ws"
+foreach ($dir in @("build", "install", "log")) {
+    $path = Join-Path $ws $dir
+    if (Test-Path $path) {
+        Remove-Item -Recurse -Force $path
+    }
 }
+Set-Location $ws
+$env:PYTHONUTF8 = "1"
+$foxyPython = "C:\opt\ros\foxy\x64\python.exe"
+& colcon build --merge-install --packages-select industrial_cam_msgs industrial_camera_node --cmake-args -G "Visual Studio 16 2019" -A x64 -DINDUSTRIAL_CAMERA_BUILD_TESTS=OFF "-DPython3_EXECUTABLE=$foxyPython" "-DPYTHON_EXECUTABLE=$foxyPython"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Write-Output "rebuild finished"
 exit 0

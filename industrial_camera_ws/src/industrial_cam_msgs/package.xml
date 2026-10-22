@@ -3,7 +3,7 @@
   <name>industrial_cam_msgs</name>
   <version>1.0.0</version>
   <description>海康工业相机节点 ROS 2 消息与服务，对应架构 V4.0 / SRS V1.0。</description>
-  <maintainer email="dev@local">HKNODE</maintainer>
+  <maintainer email="hknode@example.com">HKNODE</maintainer>
   <license>UNLICENSED</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>rosidl_default_generators</buildtool_depend>

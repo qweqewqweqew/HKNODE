@@ -9,7 +9,8 @@
 - Windows 10/11 x64，小端
 - Visual Studio 2022 或 2026，含 MSVC C++17 工具集
 - CMake 3.16 以上（Visual Studio 自带即可）
-- 真机运行另需：ROS 2（Windows 发行版）、海康 MVS SDK、GigE/USB3 相机
+- ROS 2 Foxy：`C:\opt\ros\foxy\x64`。`scripts` 会加载 `local_setup.bat`，不用先开 ROS 终端
+- 真机运行另需：GigE/USB3 相机。海康 x64 运行库已放在 `vendor/mvs/bin/win64`
 - 共享内存名不能包含 `\` 或 `/`
 
 ## 依赖
@@ -17,8 +18,8 @@
 | 组件 | 用途 | 本仓库做法 |
 | --- | --- | --- |
 | C++17 | 节点与共享内存 | MSVC |
-| ROS 2 rclcpp | 控制面消息 | 安装 ROS 后用 colcon 编译 `industrial_cam_msgs` 与节点 |
-| 海康 MVS | 打开相机 | 设置 `MVS_DEV_DIR` 指向 Development 目录后重编 |
+| ROS 2 Foxy rclcpp | 控制面消息 | `scripts/rebuild.ps1` 用 `C:\opt\ros\foxy\x64` 做 colcon，生成器 Visual Studio 16 2019，与 Foxy 的编译器一致 |
+| 海康 MVS | 打开相机 | 头文件、x64 导入库和运行库都在 `vendor/mvs`。构建时把运行库拷到可执行文件旁边 |
 | 共享内存 | 图像零拷贝 | 调用 `shared_memory_object::remove` + `create_only` + `mapped_region`。未安装 Boost 时使用 `include/shm/interprocess.hpp` 里的 Windows 文件映射，语义与上述三个调用一致 |
 
 ## 快速开始
@@ -30,14 +31,10 @@ powershell -ExecutionPolicy Bypass -File .\scripts\deploy.ps1
 powershell -ExecutionPolicy Bypass -File .\scripts\rebuild.ps1
 ```
 
-`rebuild.ps1` 会清理 `build/`，编译核心库并运行 `camera_core_tests.exe`。失败时进程退出码非 0。
-
-有 ROS 2 时，在已执行 ROS 的 `local_setup.ps1` 的终端里：
+`rebuild.ps1` 会清理 `build/`，编译核心库并运行 `camera_core_tests.exe`，再用 Foxy 编译 `industrial_cam_msgs` 和 `camera_manager_node`。失败时进程退出码非 0。
 
 ```powershell
-cd industrial_camera_ws
-colcon build --packages-select industrial_cam_msgs industrial_camera_node
-powershell -ExecutionPolicy Bypass -File ..\scripts\start.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1
 ```
 
 启动参数可以改配置路径：
@@ -73,7 +70,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1 -Topology D:\path\p
 | --- | --- |
 | 启动日志含「预检失败: PayloadSize」 | 增大 `shm_slot_capacity_mb`，或降低分辨率/像素格式 |
 | 「未找到相机」 | 核对序列号或 IP；MVS 客户端能打开后再启动节点 |
-| 「本构建未链接海康 MVS SDK」 | 安装 MVS，设置 `MVS_DEV_DIR`，重新运行 `rebuild.ps1` 或 colcon |
+| 「本构建未链接海康 MVS SDK」 | 确认 `vendor/mvs/include` 与 `vendor/mvs/lib/win64/MvCameraControl.lib` 后重新编译 |
 | STAT 里「触发超时未出图」增加 | 触发间隔小于曝光加读出时间，或硬触发线路不通 |
 | STAT 里「SHM写满丢帧」增加 | 下游太慢，或加大 `shm_slot_count` |
 | STAT 里「SHM超时强占」增加 | 下游崩溃或卡死；按最慢消费者 P99 的 1.5~2 倍设置 `shm_lock_timeout_ms` |

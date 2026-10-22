@@ -42,8 +42,6 @@ uint32_t MapPixel(unsigned int sdk_pixel) {
   }
 }
 
-void __stdcall OnSdkImage(unsigned char* data, MV_FRAME_OUT_INFO_EX* info, void* user);
-void __stdcall OnSdkException(unsigned int msg_type, void* user);
 #endif
 
 }  // namespace
@@ -69,6 +67,8 @@ struct HikPluginState {
 };
 
 #if defined(INDUSTRIAL_CAMERA_HAS_MVS)
+namespace {
+
 void __stdcall OnSdkImage(unsigned char* data, MV_FRAME_OUT_INFO_EX* info, void* user) {
   auto* impl = static_cast<HikPluginState*>(user);
   ImageCallback callback;
@@ -102,6 +102,8 @@ void __stdcall OnSdkException(unsigned int msg_type, void* user) {
     callback(static_cast<int>(msg_type));
   }
 }
+
+}  // namespace
 #endif
 
 HikCameraPlugin::HikCameraPlugin() : state_(std::make_unique<HikPluginState>()) {
@@ -129,7 +131,7 @@ bool HikCameraPlugin::Open(const std::string& connect_type, const std::string& i
   (void)connect_type;
   (void)identity;
   if (error != nullptr) {
-    *error = "本构建未链接海康 MVS SDK。请安装 MVS，设置 MVS_DEV_DIR 后重新编译。";
+    *error = "本构建未链接海康 MVS SDK。请确认 vendor/mvs 下的头文件和导入库后重新编译。";
   }
   return false;
 #else
